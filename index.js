@@ -1,5 +1,16 @@
 const LIGHTNESS_MAX = 50;
 
+let bgColor = "black";
+
+// 画面クリックで背景を白と黒で切り替える
+document.addEventListener("click", () => {
+    if (bgColor !== "white") {
+        bgColor = "white";
+    } else {
+        bgColor = "black";
+    }
+});
+
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 
@@ -47,8 +58,9 @@ function initParticles() {
  * @param {number} lightness 明度
  */
 function drawFrame(lightness) {
-    context.fillStyle = "black";
-    context.fillRect(0, 0, canvas.width, canvas.height); // 背景
+    // 背景
+    context.fillStyle = bgColor;
+    context.fillRect(0, 0, canvas.width, canvas.height);
 
     for (var i = 0; i < 2000; i++) {
         context.beginPath();
@@ -59,10 +71,25 @@ function drawFrame(lightness) {
 }
 
 /**
+ * 花火の描画時に currentLightness を決定
+ * @param {number} baseValue 基準となる明度
+ * @returns {number} 調整された明度
+ */
+function getLightness(baseValue) {
+    if (bgColor !== "black") {
+        // 白背景時：100→50へ減少
+        return 100 - baseValue;
+    } else {
+        // 黒背景時：0→50へ増加
+        return baseValue;
+    }
+}
+
+/**
  * アニメーションループ
  */
 function animate() {
-    drawFrame(currentLightness);
+    drawFrame(getLightness(currentLightness));
 
     currentLightness += fadeDirection;
     if (currentLightness >= LIGHTNESS_MAX) {
