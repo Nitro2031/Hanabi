@@ -1,3 +1,4 @@
+const POINT_COUNT = 2000;
 const LIGHTNESS_MAX = 50;
 
 let canvas = document.getElementById("canvas");
@@ -46,7 +47,7 @@ function resizeCanvas() {
  * パーティクルの初期化
  */
 function initParticles() {
-    for (var i = 0; i < 2000; i++) {
+    for (var i = 0; i < POINT_COUNT; i++) {
         angle[i] = random(0, Math.PI * 2);
         distance[i] = Math.sqrt(random(0, 1)) * Math.min(canvas.width, canvas.height) * 0.47;
     }
@@ -62,7 +63,7 @@ function drawFrame(lightness, value) {
     context.fillStyle = bgColor;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    for (var i = 0; i < 2000; i++) {
+    for (var i = 0; i < POINT_COUNT; i++) {
         context.beginPath();
         var v = Math.min(value / 50, 1) * distance[i]
         var x = Math.cos(angle[i]) * v + canvas.width / 2;
@@ -111,7 +112,7 @@ function animate() {
         hue = random(0, 360);
     }
 
-    setTimeout(animate, 50);
+    setTimeout(animate, 42); // 約24fps
 }
 
 /**
