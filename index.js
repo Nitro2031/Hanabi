@@ -1,8 +1,20 @@
 const LIGHTNESS_MAX = 50;
 
+let canvas = document.getElementById("canvas");
+let context = canvas.getContext("2d");
+
+let currentLightness = 0;   // 花火の明るさを表す変数
+let currentValue = 0;       // 花火の成長を表す変数
+let fadeDirection = 1;      // 明るさの増減方向を表す変数（1: 増加, -1: 減少）
+let hue = random(0, 360);   // 花火の色相を表す変数
+let angle = [];             // 各パーティクルの角度を格納する配列
+let distance = [];          // 各パーティクルの距離を格納する配列
+
 let bgColor = "black";
 
-// 画面クリックで背景を白と黒で切り替える
+/**
+ * 画面クリックで背景を白と黒で切り替える
+ */
 document.addEventListener("click", () => {
     if (bgColor !== "white") {
         bgColor = "white";
@@ -11,15 +23,6 @@ document.addEventListener("click", () => {
     }
 });
 
-var canvas = document.getElementById("canvas");
-var context = canvas.getContext("2d");
-
-var currentLightness = 0;
-var currentValue = 0;
-var fadeDirection = 1;
-var hue = random(0, 360);
-var angle = [];
-var distance = [];
 
 /**
  * 乱数
@@ -64,7 +67,11 @@ function drawFrame(lightness, value) {
         var v = Math.min(value / 50, 1) * distance[i]
         var x = Math.cos(angle[i]) * v + canvas.width / 2;
         var y = Math.sin(angle[i]) * v + canvas.height / 2;
-        context.arc(x, y, lightness / 20, 0, Math.PI * 2);
+        var l = 100 - lightness;
+        if (bgColor !== "white") {
+            l = lightness;
+        }
+        context.arc(x, y, l / 20, 0, Math.PI * 2);
         context.fillStyle = "hsl(" + hue + ", 100%, " + lightness + "%)";
         context.fill();
     }
@@ -76,12 +83,12 @@ function drawFrame(lightness, value) {
  * @returns {number} 調整された明度
  */
 function getLightness(baseValue) {
-    if (bgColor !== "black") {
-        // 白背景時：100→50へ減少
-        return 100 - baseValue;
-    } else {
+    if (bgColor !== "white") {
         // 黒背景時：0→50へ増加
         return baseValue;
+    } else {
+        // 白背景時：100→50へ減少
+        return 100 - baseValue;
     }
 }
 
