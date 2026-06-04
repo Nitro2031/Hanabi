@@ -24,6 +24,14 @@ document.addEventListener("click", () => {
     }
 });
 
+/**
+ * easeOutQuad イージング関数
+ * @param {number} t 
+ * @returns {number} 
+ */
+function easeOutQuad(t) {
+    return 1 - (1 - t) * (1 - t);
+}
 
 /**
  * 乱数
@@ -66,7 +74,8 @@ function drawFrame(lightness, value) {
     // 花火の描画
     for (let i = 0; i < POINT_COUNT; i++) {
         context.beginPath();
-        let v = Math.min(value / 50, 1) * distance[i]
+        let t = Math.min(value / 50, 1)
+        let v = easeOutQuad(t) * distance[i];
         let x = Math.cos(angle[i]) * v + canvas.width / 2;
         let y = Math.sin(angle[i]) * v + canvas.height / 2;
         let l = 100 - lightness;
