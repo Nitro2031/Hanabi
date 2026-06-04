@@ -63,6 +63,7 @@ function drawFrame(lightness, value) {
     context.fillStyle = bgColor;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
+    // 花火の描画
     for (var i = 0; i < POINT_COUNT; i++) {
         context.beginPath();
         var v = Math.min(value / 50, 1) * distance[i]
@@ -101,6 +102,7 @@ function animate() {
 
     currentLightness += fadeDirection;
     currentValue += 1;
+    // 明るさが最大値に達したら、減少に切り替える
     if (currentLightness >= LIGHTNESS_MAX) {
         currentLightness = LIGHTNESS_MAX;
         fadeDirection = -1;
