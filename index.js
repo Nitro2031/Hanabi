@@ -1,5 +1,5 @@
-const POINT_COUNT = 2000;
-const LIGHTNESS_MAX = 50;
+const POINT_COUNT = 2000;   // 花火のパーティクルの数
+const LIGHTNESS_MAX = 50;   // 花火の明るさの最大値(%)
 
 let canvas = document.getElementById("canvas");
 let context = canvas.getContext("2d");
@@ -47,7 +47,7 @@ function resizeCanvas() {
  * パーティクルの初期化
  */
 function initParticles() {
-    for (var i = 0; i < POINT_COUNT; i++) {
+    for (let i = 0; i < POINT_COUNT; i++) {
         angle[i] = random(0, Math.PI * 2);
         distance[i] = Math.sqrt(random(0, 1)) * Math.min(canvas.width, canvas.height) * 0.47;
     }
@@ -64,12 +64,12 @@ function drawFrame(lightness, value) {
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     // 花火の描画
-    for (var i = 0; i < POINT_COUNT; i++) {
+    for (let i = 0; i < POINT_COUNT; i++) {
         context.beginPath();
-        var v = Math.min(value / 50, 1) * distance[i]
-        var x = Math.cos(angle[i]) * v + canvas.width / 2;
-        var y = Math.sin(angle[i]) * v + canvas.height / 2;
-        var l = 100 - lightness;
+        let v = Math.min(value / 50, 1) * distance[i]
+        let x = Math.cos(angle[i]) * v + canvas.width / 2;
+        let y = Math.sin(angle[i]) * v + canvas.height / 2;
+        let l = 100 - lightness;
         if (bgColor !== "white") {
             l = lightness;
         }
